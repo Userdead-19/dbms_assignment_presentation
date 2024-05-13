@@ -18,5 +18,6 @@ const LoginAccessSchema: Schema = new Schema({
     Device_type: { type: String, required: true },
 });
 
-export default mongoose.model<ILoginAccess>('LoginAccess', LoginAccessSchema);
+const LoginAcessModel = mongoose.model<ILoginAccess>('LoginAccess', LoginAccessSchema);
 
+module.exports = LoginAcessModel;

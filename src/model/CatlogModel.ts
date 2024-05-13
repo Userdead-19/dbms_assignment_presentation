@@ -40,5 +40,6 @@ const CatlogSchema: Schema = new Schema({
     Tags: { type: [String], required: true },
 });
 
-export default mongoose.model<ICatlog>('Catlog', CatlogSchema);
+const CatlogModel = mongoose.model<ICatlog>('Catlog', CatlogSchema);
 
+module.exports = CatlogModel;

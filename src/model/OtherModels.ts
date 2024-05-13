@@ -70,4 +70,9 @@ const DimensionSchema: Schema = new Schema({
 
 const DimensionModel = mongoose.model<IDimension>('Dimension', DimensionSchema);
 
-export { AddressModel, ManufacturerModel, CategoryModel, DimensionModel };
+module.exports = {
+    AddressModel,
+    ManufacturerModel,
+    CategoryModel,
+    DimensionModel
+}

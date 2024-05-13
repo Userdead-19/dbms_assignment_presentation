@@ -18,7 +18,7 @@ const createDimension = async (req, res) => {
     const dimension = await DimensionModel.create(req.body);
     res.status(201).json(dimension);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create dimension" });
+    res.status(500).json({ error: error + " create dimension" });
   }
 };
 
@@ -28,7 +28,7 @@ const getAllDimensions = async (req, res) => {
     const dimensions = await DimensionModel.find();
     res.json(dimensions);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get dimensions" });
+    res.status(500).json({ error: error + " get dimensions" });
   }
 };
 
@@ -42,7 +42,7 @@ const getDimensionById = async (req, res) => {
       res.json(dimension);
     }
   } catch (error) {
-    res.status(500).json({ error: "Failed to get dimension" });
+    res.status(500).json({ error: error + " get dimension" });
   }
 };
 
@@ -63,7 +63,7 @@ const updateDimensionById = async (req, res) => {
       res.json(dimension);
     }
   } catch (error) {
-    res.status(500).json({ error: "Failed to update dimension" });
+    res.status(500).json({ error: error + " update dimension" });
   }
 };
 
@@ -77,7 +77,7 @@ const deleteDimensionById = async (req, res) => {
       res.json({ message: "Dimension deleted successfully" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete dimension" });
+    res.status(500).json({ error: error + " delete dimension" });
   }
 };
 
@@ -87,7 +87,7 @@ const createManufacturer = async (req, res) => {
     const manufacturer = await ManufacturerModel.create(req.body);
     res.status(201).json(manufacturer);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create manufacturer" });
+    res.status(500).json({ error: error + " create manufacturer" });
   }
 };
 
@@ -97,7 +97,7 @@ const getAllManufacturers = async (req, res) => {
     const manufacturers = await ManufacturerModel.find();
     res.json(manufacturers);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get manufacturers" });
+    res.status(500).json({ error: error + " get manufacturers" });
   }
 };
 
@@ -110,7 +110,7 @@ const getManufacturerById = async (req, res) => {
     }
     res.json(manufacturer);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get manufacturer" });
+    res.status(500).json({ error: error + " get manufacturer" });
   }
 };
 
@@ -130,7 +130,7 @@ const updateManufacturerById = async (req, res) => {
     }
     res.json(manufacturer);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update manufacturer" });
+    res.status(500).json({ error: error + " update manufacturer" });
   }
 };
 
@@ -145,7 +145,7 @@ const deleteManufacturerById = async (req, res) => {
     }
     res.json({ message: "Manufacturer deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete manufacturer" });
+    res.status(500).json({ error: error + " delete manufacturer" });
   }
 };
 
@@ -155,7 +155,7 @@ const createCategory = async (req, res) => {
     const category = await CategoryModel.create(req.body);
     res.status(201).json(category);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create category" });
+    res.status(500).json({ error: error + " create category" });
   }
 };
 
@@ -165,7 +165,7 @@ const getAllCategories = async (req, res) => {
     const categories = await CategoryModel.find();
     res.json(categories);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get categories" });
+    res.status(500).json({ error: error + " get categories" });
   }
 };
 
@@ -178,7 +178,7 @@ const getCategoryById = async (req, res) => {
     }
     res.json(category);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get category" });
+    res.status(500).json({ error: error + " get category" });
   }
 };
 
@@ -198,7 +198,7 @@ const updateCategoryById = async (req, res) => {
     }
     res.json(category);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update category" });
+    res.status(500).json({ error: error + " update category" });
   }
 };
 
@@ -211,7 +211,7 @@ const deleteCategoryById = async (req, res) => {
     }
     res.json({ message: "Category deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete category" });
+    res.status(500).json({ error: error + " delete category" });
   }
 };
 
@@ -221,7 +221,7 @@ const createCustomer = async (req, res) => {
     const customer = await CustomerModel.create(req.body);
     res.status(201).json(customer);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create customer" });
+    res.status(500).json({ error: error + " create customer" });
   }
 };
 
@@ -231,7 +231,7 @@ const getAllCustomers = async (req, res) => {
     const customers = await CustomerModel.find();
     res.json(customers);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get customers" });
+    res.status(500).json({ error: error + " get customers" });
   }
 };
 
@@ -244,7 +244,7 @@ const getCustomerById = async (req, res) => {
     }
     res.json(customer);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get customer" });
+    res.status(500).json({ error: error + " get customer" });
   }
 };
 
@@ -264,7 +264,7 @@ const updateCustomerById = async (req, res) => {
     }
     res.json(customer);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update customer" });
+    res.status(500).json({ error: error + " update customer" });
   }
 };
 
@@ -277,7 +277,7 @@ const deleteCustomerById = async (req, res) => {
     }
     res.json({ message: "Customer deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete customer" });
+    res.status(500).json({ error: error + " delete customer" });
   }
 };
 
@@ -287,7 +287,7 @@ const createLoginAccess = async (req, res) => {
     const loginAccess = await LoginAccessModel.create(req.body);
     res.status(201).json(loginAccess);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create login access" });
+    res.status(500).json({ error: error + " create login access" });
   }
 };
 
@@ -297,7 +297,7 @@ const getAllLoginAccesses = async (req, res) => {
     const loginAccesses = await LoginAccessModel.find();
     res.json(loginAccesses);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get login accesses" });
+    res.status(500).json({ error: error + " get login accesses" });
   }
 };
 
@@ -310,7 +310,7 @@ const getLoginAccessById = async (req, res) => {
     }
     res.json(loginAccess);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get login access" });
+    res.status(500).json({ error: error + " get login access" });
   }
 };
 
@@ -330,7 +330,7 @@ const updateLoginAccessById = async (req, res) => {
     }
     res.json(loginAccess);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update login access" });
+    res.status(500).json({ error: error + " update login access" });
   }
 };
 
@@ -343,7 +343,7 @@ const deleteLoginAccessById = async (req, res) => {
     }
     res.json({ message: "Login access deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete login access" });
+    res.status(500).json({ error: error + " delete login access" });
   }
 };
 
@@ -353,7 +353,7 @@ const createAddress = async (req, res) => {
     const address = await AddressModel.create(req.body);
     res.status(201).json(address);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create address" });
+    res.status(500).json({ error: error + " create address" });
   }
 };
 
@@ -363,7 +363,7 @@ const getAllAddresses = async (req, res) => {
     const addresses = await AddressModel.find();
     res.json(addresses);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get addresses" });
+    res.status(500).json({ error: error + " get addresses" });
   }
 };
 
@@ -376,7 +376,7 @@ const getAddressById = async (req, res) => {
     }
     res.json(address);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get address" });
+    res.status(500).json({ error: error + " get address" });
   }
 };
 
@@ -396,7 +396,7 @@ const updateAddressById = async (req, res) => {
     }
     res.json(address);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update address" });
+    res.status(500).json({ error: error + " update address" });
   }
 };
 
@@ -409,7 +409,7 @@ const deleteAddressById = async (req, res) => {
     }
     res.json({ message: "Address deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete address" });
+    res.status(500).json({ error: error + " delete address" });
   }
 };
 
@@ -419,7 +419,7 @@ const createCatlog = async (req, res) => {
     const catlog = await CatlogModel.create(req.body);
     res.status(201).json(catlog);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create catlog" });
+    res.status(500).json({ error: error + " create catlog" });
   }
 };
 
@@ -429,7 +429,7 @@ const getAllCatlogs = async (req, res) => {
     const catlogs = await CatlogModel.find();
     res.json(catlogs);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get catlogs" });
+    res.status(500).json({ error: error + " get catlogs" });
   }
 };
 
@@ -442,7 +442,7 @@ const getCatlogById = async (req, res) => {
     }
     res.json(catlog);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get catlog" });
+    res.status(500).json({ error: error + " get catlog" });
   }
 };
 
@@ -462,7 +462,7 @@ const updateCatlogById = async (req, res) => {
     }
     res.json(catlog);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update catlog" });
+    res.status(500).json({ error: error + " update catlog" });
   }
 };
 
@@ -475,7 +475,7 @@ const deleteCatlogById = async (req, res) => {
     }
     res.json({ message: "Catlog deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete catlog" });
+    res.status(500).json({ error: error + " delete catlog" });
   }
 };
 
@@ -485,7 +485,7 @@ const createPayment = async (req, res) => {
     const payment = await PaymentModel.create(req.body);
     res.status(201).json(payment);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create payment" });
+    res.status(500).json({ error: error + " create payment" });
   }
 };
 
@@ -495,7 +495,7 @@ const getAllPayments = async (req, res) => {
     const payments = await PaymentModel.find();
     res.json(payments);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get payments" });
+    res.status(500).json({ error: error + " get payments" });
   }
 };
 
@@ -508,7 +508,7 @@ const getPaymentById = async (req, res) => {
     }
     res.json(payment);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get payment" });
+    res.status(500).json({ error: error + " get payment" });
   }
 };
 
@@ -528,7 +528,7 @@ const updatePaymentById = async (req, res) => {
     }
     res.json(payment);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update payment" });
+    res.status(500).json({ error: error + " update payment" });
   }
 };
 
@@ -541,7 +541,7 @@ const deletePaymentById = async (req, res) => {
     }
     res.json({ message: "Payment deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete payment" });
+    res.status(500).json({ error: error + " delete payment" });
   }
 };
 
@@ -551,7 +551,7 @@ const createCart = async (req, res) => {
     const cart = await CartModel.create(req.body);
     res.status(201).json(cart);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create cart" });
+    res.status(500).json({ error: error + " create cart" });
   }
 };
 
@@ -561,7 +561,7 @@ const getAllCarts = async (req, res) => {
     const carts = await CartModel.find();
     res.json(carts);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get carts" });
+    res.status(500).json({ error: error + " get carts" });
   }
 };
 
@@ -574,7 +574,7 @@ const getCartById = async (req, res) => {
     }
     res.json(cart);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get cart" });
+    res.status(500).json({ error: error + " get cart" });
   }
 };
 
@@ -590,7 +590,7 @@ const updateCartById = async (req, res) => {
     }
     res.json(cart);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update cart" });
+    res.status(500).json({ error: error + " update cart" });
   }
 };
 
@@ -603,7 +603,7 @@ const deleteCartById = async (req, res) => {
     }
     res.json({ message: "Cart deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete cart" });
+    res.status(500).json({ error: error + " delete cart" });
   }
 };
 
@@ -615,7 +615,7 @@ const createCheckout = async (req, res) => {
     const checkout = await CheckoutModel.create(req.body);
     res.status(201).json(checkout);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create checkout" });
+    res.status(500).json({ error: error + " create checkout" });
   }
 };
 
@@ -625,7 +625,7 @@ const getAllCheckouts = async (req, res) => {
     const checkouts = await CheckoutModel.find();
     res.json(checkouts);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get checkouts" });
+    res.status(500).json({ error: error + " get checkouts" });
   }
 };
 
@@ -638,7 +638,7 @@ const getCheckoutById = async (req, res) => {
     }
     res.json(checkout);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get checkout" });
+    res.status(500).json({ error: error + " get checkout" });
   }
 };
 
@@ -658,7 +658,7 @@ const updateCheckoutById = async (req, res) => {
     }
     res.json(checkout);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update checkout" });
+    res.status(500).json({ error: error + " update checkout" });
   }
 };
 
@@ -671,7 +671,7 @@ const deleteCheckoutById = async (req, res) => {
     }
     res.json({ message: "Checkout deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete checkout" });
+    res.status(500).json({ error: error + " delete checkout" });
   }
 };
 
@@ -681,16 +681,17 @@ const createShipping = async (req, res) => {
     const shipping = await ShippingModel.create(req.body);
     res.status(201).json(shipping);
   } catch (error) {
-    res.status(500).json({ error: "Failed to create shipping" });
+    res.status(500).json({ error: error + " create shipping" });
   }
 };
 
+// Get all shippings
 const getAllShippings = async (req, res) => {
   try {
     const shippings = await ShippingModel.find();
     res.json(shippings);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get shippings" });
+    res.status(500).json({ error: error + " get shippings " + error });
   }
 };
 
@@ -702,7 +703,7 @@ const getShippingById = async (req, res) => {
     }
     res.json(shipping);
   } catch (error) {
-    res.status(500).json({ error: "Failed to get shipping" });
+    res.status(500).json({ error: error + " get shipping" });
   }
 };
 
@@ -721,7 +722,7 @@ const updateShippingById = async (req, res) => {
     }
     res.json(shipping);
   } catch (error) {
-    res.status(500).json({ error: "Failed to update shipping" });
+    res.status(500).json({ error: error + " update shipping" });
   }
 };
 
@@ -733,7 +734,7 @@ const deleteShippingById = async (req, res) => {
     }
     res.json({ message: "Shipping deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete shipping" });
+    res.status(500).json({ error: error + " delete shipping" });
   }
 };
 

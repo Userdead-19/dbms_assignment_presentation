@@ -24,4 +24,6 @@ const CartSchema: Schema = new Schema({
     sub_total: { type: Number, required: true },
 });
 
-export default mongoose.model<ICart>('Cart', CartSchema);
+const CartModel = mongoose.model<ICart>('Cart', CartSchema);
+
+module.exports = CartModel;
