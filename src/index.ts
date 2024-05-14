@@ -2,9 +2,12 @@ import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import bodyParser = require("body-parser");
+import cors from "cors";
 import morgan from 'morgan';
 const ApiRouter = require('./Router/ApiRouter');
 dotenv.config();
+
+
 
 mongoose.connect(process.env.MONGOURL || '').then(() => {
     console.log('Connected to mongoDB');
@@ -18,7 +21,9 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-
+app.use(cors({
+    origin: '*'
+}))
 
 app.use("/api", ApiRouter)
 
