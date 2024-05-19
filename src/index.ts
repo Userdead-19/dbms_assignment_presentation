@@ -46,6 +46,18 @@ app.get('/readfile', (req, res) => {
         res.send(data);
     });
 });
+app.get('/readfile2', (req, res) => {
+    const filePath = path.join(__dirname, 'example2.txt');
+
+    fs.readFile(filePath, 'utf8', (err: any, data: any) => {
+        if (err) {
+            console.error('Error reading file:', err);
+            res.status(500).send('Error reading file');
+            return;
+        }
+        res.send(data);
+    });
+});
 
 app.listen(3000, () => {
     console.log('Server is running on port ' + 3000);
