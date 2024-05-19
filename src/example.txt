@@ -1,3 +1,4 @@
+//program 1 : open and close file using system calls
 // #include<stdio.h>
 // #include<stdlib.h>
 // #include<unistd.h>
@@ -40,7 +41,7 @@
 //     printf("File copied success fully");
 // }
 
-/// program 2
+/// program 2 : read the file and count the number of characters in the file
 
 // #include<stdio.h>
 // #include<stdlib.h>
@@ -78,7 +79,7 @@
 // }
 
 
-/// program 3
+/// program 3: create two child process and wait for the child process to complete
 
 // #include<stdio.h>
 // #include<stdlib.h>
@@ -119,7 +120,7 @@
 // }
 
 
-////program 4
+////program 4: create a child process and write the content into the file
 
 // #include<stdio.h>
 // #include<stdlib.h>
@@ -178,5 +179,524 @@
 //         exit(EXIT_FAILURE); 
 //     }
 // }
+
+
+//PROGRAM 5 : ROUND ROBIN PREMPTIVE SCHEDULING ALGORITHM
+
+Preemptive RR
+#include<stdio.h>
+#include<stdlib.h>
+
+struct PCB {
+    int cpuBurst;
+    int procId;
+    int waitingTime;
+    struct PCB *prev, *next;
+};
+
+struct PCB *createPCB(int procId, int cpuBurst) {
+    struct PCB *newPCB = (struct PCB *)malloc(sizeof(struct PCB));
+    newPCB->procId = procId;
+    newPCB->cpuBurst = cpuBurst;
+    newPCB->waitingTime = 0;
+    newPCB->prev = NULL;
+    newPCB->next = NULL;
+    return newPCB;
+}
+
+void insert_rr(struct PCB **head, struct PCB *newPCB) {
+    if (*head == NULL) {
+        *head = newPCB;
+    } else {
+        struct PCB *temp = *head;
+        while (temp->next != *head && temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newPCB;
+        newPCB->prev = temp;
+        newPCB->next = *head;
+        (*head)->prev = newPCB;
+    }
+}
+
+void round_robin(struct PCB **head, int timeQuantum, int n) {
+    struct PCB *current = *head;
+    int current_time = 0;
+    int times_executed[n];
+    int total_waiting_time = 0;
+    int tat = 0;
+
+    for (int i = 0; i < n; i++) {
+        times_executed[i] = 0;
+    }
+
+    while (current != NULL) {
+        int allProcessesCompleted = 1;
+
+        struct PCB *temp = *head;
+
+        while (temp != NULL) {
+            if (temp->cpuBurst > 0) {
+                allProcessesCompleted = 0;
+                break;
+            }
+            temp = temp->next;
+            if (temp == *head) break;
+        }
+
+        if (allProcessesCompleted) {
+            break;
+        }
+
+        if (current->cpuBurst > timeQuantum) {
+            current->cpuBurst -= timeQuantum;
+            current_time += timeQuantum;
+            times_executed[current->procId - 1]++;
+            printf("Process:%d is running\n", current->procId);
+            current = current->next;
+        } else if (current->cpuBurst <= timeQuantum) {
+            current->waitingTime = current_time - (timeQuantum * times_executed[current->procId - 1]);
+            current_time += current->cpuBurst;
+            total_waiting_time += current->waitingTime;
+            tat += current->waitingTime + current->cpuBurst + timeQuantum * times_executed[current->procId - 1];
+            printf("Process:%d exited with a waiting time of %d milliseconds\n", current->procId, current->waitingTime);
+
+            if (current->next == current) {
+                free(current);
+                current = NULL;
+            } else {
+                current->prev->next = current->next;
+                current->next->prev = current->prev;
+                struct PCB *temp = current;
+                current = current->next;
+                free(temp);
+            }
+        }
+    }
+
+    float avg_waiting_time = (float)total_waiting_time / n;
+    printf("Avg waiting time is %.2f milliseconds\n", avg_waiting_time);
+    float avg_turnaround_time = (float)tat / n;
+    printf("Avg turnaround time is %.2f milliseconds\n", avg_turnaround_time);
+}
+
+void display(struct PCB *head) {
+    struct PCB *current = head, *temp = NULL;
+    while (current != NULL) {
+        printf("Process:%d is running for %d millisecond with a waiting time of %d milliseconds\n", current->procId, current->cpuBurst, current->waitingTime);
+        current = current->next;
+        if (temp != NULL) temp = temp->next;
+        if (temp == head) break;
+        if (current == head) {
+            temp = current;
+        }
+    }
+}
+
+int main() {
+    struct PCB *head_rr = NULL;
+    int n, q;
+
+    printf("Enter the no of processes:");
+    scanf("%d", &n);
+
+    printf("Enter the details of processes\n");
+    for (int i = 0; i < n; i++) {
+        int cpuBurst;
+        printf("Enter the cpu burst time for process %d :", i + 1);
+        scanf("%d", &cpuBurst);
+        struct PCB *newPCB_rr = createPCB(i + 1, cpuBurst);
+        insert_rr(&head_rr, newPCB_rr);
+    }
+
+    printf("Enter the time quantum for round robin:");
+    scanf("%d", &q);
+    round_robin(&head_rr, q, n);
+    return 0;
+}
+
+
+// NON Preemptive PRIORITY SCHEDULING ALGORITHM
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Process {
+    int id;
+    int burst_time;
+    int priority;
+};
+
+void swap(struct Process *xp, struct Process *yp) {
+    struct Process temp = *xp;
+    *xp = *yp;
+    *yp = temp;
+}
+
+void sort_by_priority(struct Process processes[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (processes[j].priority > processes[j + 1].priority) {
+                swap(&processes[j], &processes[j + 1]);
+            }
+        }
+    }
+}
+
+void priority_scheduling(struct Process processes[], int n) {
+    sort_by_priority(processes, n);
+
+    int waiting_time[n], turnaround_time[n];
+    float total_waiting_time = 0, total_turnaround_time = 0;
+
+    waiting_time[0] = 0;
+    turnaround_time[0] = processes[0].burst_time;
+
+    for (int i = 1; i < n; i++) {
+        waiting_time[i] = turnaround_time[i - 1];
+        turnaround_time[i] = waiting_time[i] + processes[i].burst_time;
+    }
+
+    for (int i = 0; i < n; i++) {
+        total_waiting_time += waiting_time[i];
+        total_turnaround_time += turnaround_time[i];
+        printf("Process ID: %d, Burst Time: %d, Waiting Time: %d, Turnaround Time: %d\n", processes[i].id, processes[i].burst_time, waiting_time[i], turnaround_time[i]);
+    }
+
+    printf("Average Waiting Time: %.2f\n", total_waiting_time / n);
+    printf("Average Turnaround Time: %.2f\n", total_turnaround_time / n);
+}
+
+int main() {
+    int n;
+    printf("Enter the number of processes: ");
+    scanf("%d", &n);
+
+    struct Process processes[n];
+    for (int i = 0; i < n; i++) {
+        printf("Enter details for Process %d\n", i + 1);
+        processes[i].id = i + 1;
+        printf("Burst Time: ");
+        scanf("%d", &processes[i].burst_time);
+        printf("Priority: ");
+        scanf("%d", &processes[i].priority);
+    }
+
+    priority_scheduling(processes, n);
+
+    return 0;
+}
+
+//PROGRAM 7 :PRIME NUMBERS USING PROCESS 
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <stdbool.h>
+
+// Function to check if a number is prime
+bool is_prime(int num) {
+    if (num <= 1) return false;
+    for (int i = 2; i * i <= num; i++) {
+        if (num % i == 0) return false;
+    }
+    return true;
+}
+
+// Thread function to find and print prime numbers
+void* find_primes(void* arg) {
+    int max_num = (int)arg;
+    printf("Prime numbers less than or equal to %d are:\n", max_num);
+    for (int i = 2; i <= max_num; i++) {
+        if (is_prime(i)) {
+            printf("%d\n", i);
+        }
+    }
+    return NULL;
+}
+
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <number>\n", argv[0]);
+        return 1;
+    }
+
+    int max_num = atoi(argv[1]);
+    if (max_num <= 1) {
+        fprintf(stderr, "Please enter a number greater than 1.\n");
+        return 1;
+    }
+
+    pthread_t prime_thread;
+
+    // Create a new thread to find and print prime numbers
+    if (pthread_create(&prime_thread, NULL, find_primes, &max_num) != 0) {
+        fprintf(stderr, "Error creating thread\n");
+        return 1;
+    }
+
+    // Wait for the thread to complete
+    if (pthread_join(prime_thread, NULL) != 0) {
+        fprintf(stderr, "Error joining thread\n");
+        return 1;
+    }
+
+    return 0;
+}
+
+PROGRAM 8 : SEMAPHORES
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <semaphore.h>
+
+#define BUFFER_SIZE 10
+
+int buffer[BUFFER_SIZE];
+int in = 0;
+int out = 0;
+
+sem_t empty;
+sem_t full;
+pthread_mutex_t mutex;
+
+void* producer(void* param) {
+    int item;
+    while (1) {
+        // Produce an item (for simplicity, use a random number)
+        item = rand() % 100;
+        sem_wait(&empty);
+        pthread_mutex_lock(&mutex);
+        
+        // Add the item to the buffer
+        buffer[in] = item;
+        printf("Producer produced: %d\n", item);
+        in = (in + 1) % BUFFER_SIZE;
+
+        pthread_mutex_unlock(&mutex);
+        sem_post(&full);
+        
+        // Sleep for a random amount of time
+        sleep(rand() % 3);
+    }
+    return NULL;
+}
+
+void* consumer(void* param) {
+    int item;
+    while (1) {
+        sem_wait(&full);
+        pthread_mutex_lock(&mutex);
+        
+        // Remove the item from the buffer
+        item = buffer[out];
+        printf("Consumer consumed: %d\n", item);
+        out = (out + 1) % BUFFER_SIZE;
+
+        pthread_mutex_unlock(&mutex);
+        sem_post(&empty);
+        
+        // Sleep for a random amount of time
+        sleep(rand() % 3);
+    }
+    return NULL;
+}
+
+int main() {
+    pthread_t tid1, tid2;
+
+    // Initialize the semaphores
+    sem_init(&empty, 0, BUFFER_SIZE);
+    sem_init(&full, 0, 0);
+    pthread_mutex_init(&mutex, NULL);
+
+    // Create the producer and consumer threads
+    pthread_create(&tid1, NULL, producer, NULL);
+    pthread_create(&tid2, NULL, consumer, NULL);
+
+    // Join the threads (this will actually never happen in this example)
+    pthread_join(tid1, NULL);
+    pthread_join(tid2, NULL);
+
+    // Destroy the semaphores and mutex
+    sem_destroy(&empty);
+    sem_destroy(&full);
+    pthread_mutex_destroy(&mutex);
+
+    return 0;
+}
+
+PROGRAM 9:SCAN ALGORITHM DISK SCHEDULING
+
+//scan
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+// Function to sort the requests in ascending order
+void sort_requests(int requests[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (requests[j] > requests[j + 1]) {
+                int temp = requests[j];
+                requests[j] = requests[j + 1];
+                requests[j + 1] = temp;
+            }
+        }
+    }
+}
+
+// Function to find the index of the current head position in the requests array
+int find_head_position_index(int requests[], int n, int head_position) {
+    for (int i = 0; i < n; i++) {
+        if (requests[i] >= head_position) {
+            return i;
+        }
+    }
+    return n - 1; // Return the last index if head position is greater than all requests
+}
+
+void scan_disk_scheduling(int requests[], int n, int head_position, bool direction) {
+    sort_requests(requests, n);
+
+    int total_seek_time = 0;
+    int current_index = find_head_position_index(requests, n, head_position);
+
+    printf("Seek Sequence: %d", head_position);
+    if (direction) {
+        // Scan in the forward direction
+        for (int i = current_index; i < n; i++) {
+            printf(" -> %d", requests[i]);
+            total_seek_time += abs(requests[i] - head_position);
+            head_position = requests[i];
+        }
+        total_seek_time += abs(head_position - 0); // Move to the end of the disk
+        head_position = 0;
+        printf(" -> 0");
+        for (int i = current_index - 1; i >= 0; i--) {
+            printf(" -> %d", requests[i]);
+            total_seek_time += abs(requests[i] - head_position);
+            head_position = requests[i];
+        }
+    } else {
+        // Scan in the reverse direction
+        for (int i = current_index; i >= 0; i--) {
+            printf(" -> %d", requests[i]);
+            total_seek_time += abs(requests[i] - head_position);
+            head_position = requests[i];
+        }
+        total_seek_time += abs(199 - head_position); // Move to the end of the disk
+        head_position = 199;
+        printf(" -> 199");
+        for (int i = current_index + 1; i < n; i++) {
+            printf(" -> %d", requests[i]);
+            total_seek_time += abs(requests[i] - head_position);
+            head_position = requests[i];
+        }
+    }
+
+    printf("\nTotal Seek Time: %d\n", total_seek_time);
+}
+
+int main() {
+    int n, head_position;
+    bool direction;
+    
+    printf("Enter the number of requests: ");
+    scanf("%d", &n);
+
+    int requests[n];
+    printf("Enter the requests: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &requests[i]);
+    }
+
+    printf("Enter the initial head position (0-199): ");
+    scanf("%d", &head_position);
+
+    printf("Enter the direction (0 for backward, 1 for forward): ");
+    scanf("%d", &direction);
+
+    scan_disk_scheduling(requests, n, head_position, direction);
+
+    return 0;
+}
+
+PROGRAM 10:SSTF ALGORITHM DISK SCHEDULING
+
+//sstf
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <limits.h>
+
+// Function to find the absolute difference
+int abs_diff(int a, int b) {
+    return abs(a - b);
+}
+
+// Function to find the closest request
+int find_closest_request(int current_position, int requests[], bool processed[], int n) {
+    int min_distance = INT_MAX;
+    int closest_index = -1;
+
+    for (int i = 0; i < n; i++) {
+        if (!processed[i]) {
+            int distance = abs_diff(current_position, requests[i]);
+            if (distance < min_distance) {
+                min_distance = distance;
+                closest_index = i;
+            }
+        }
+    }
+    return closest_index;
+}
+
+void sstf_disk_scheduling(int requests[], int n, int start) {
+    bool processed[n];
+    for (int i = 0; i < n; i++) {
+        processed[i] = false;
+    }
+
+    int current_position = start;
+    int total_seek_time = 0;
+
+    printf("Seek Sequence: %d", current_position);
+    for (int i = 0; i < n; i++) {
+        int closest_index = find_closest_request(current_position, requests, processed, n);
+        if (closest_index == -1) {
+            break;
+        }
+
+        processed[closest_index] = true;
+        total_seek_time += abs_diff(current_position, requests[closest_index]);
+        current_position = requests[closest_index];
+
+        printf(" -> %d", current_position);
+    }
+    printf("\nTotal Seek Time: %d\n", total_seek_time);
+    printf("Average Seek Time: %.2f\n", (float)total_seek_time / n);
+}
+
+int main() {
+    int n, start;
+    printf("Enter the number of requests: ");
+    scanf("%d", &n);
+
+    int requests[n];
+    printf("Enter the requests: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &requests[i]);
+    }
+
+    printf("Enter the initial head position: ");
+    scanf("%d", &start);
+
+    sstf_disk_scheduling(requests, n, start);
+
+    return 0;
+}
+
 
 
